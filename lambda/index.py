@@ -46,7 +46,7 @@ def use_bedrock_client(messages):
                 "topP": 0.9
             }
         }
-        
+        print("Using model:", MODEL_ID)
         print("Calling Bedrock invoke_model API with payload:", json.dumps(request_payload))
         
         # invoke_model APIを呼び出し
@@ -67,9 +67,10 @@ def use_bedrock_client(messages):
         # アシスタントの応答を取得
         return response_body['output']['message']['content'][0]['text']
 
-def use_fast_api(messages):
+def use_fast_api(message):
     # リクエスト先URL
     url = 'https://test.ngrok-free.app/generate'
+
     # リクエストヘッダー
     headers = {
         'accept': 'application/json',
@@ -78,7 +79,7 @@ def use_fast_api(messages):
 
     # 送信するデータ
     data = {
-        "prompt": "こんにちは！",
+        "prompt": str(message),
         "max_new_tokens": 512,
         "do_sample": True,
         "temperature": 0.7,
@@ -122,7 +123,6 @@ def lambda_handler(event, context):
         conversation_history = body.get('conversationHistory', [])
 
         print("Processing message:", message)
-        print("Using model:", MODEL_ID)
 
         # 会話履歴を使用
         messages = conversation_history.copy()
@@ -136,7 +136,7 @@ def lambda_handler(event, context):
         # Bedrockモデルを使用して応答を生成
         assistant_response = use_bedrock_client(messages)
         # FastAPIを使用して応答を生成
-        # assistant_response = use_fast_api(messages)
+        # assistant_response = use_fast_api(message)
         
         # アシスタントの応答を会話履歴に追加
         messages.append({
