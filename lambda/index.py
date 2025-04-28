@@ -69,7 +69,7 @@ def use_bedrock_client(messages):
 
 def use_fast_api(message):
     # リクエスト先URL
-    url = 'https://test.ngrok-free.app/generate'
+    url = 'https://7a16-34-125-198-38.ngrok-free.app/generate'
 
     # リクエストヘッダー
     headers = {
@@ -134,9 +134,9 @@ def lambda_handler(event, context):
         })
 
         # Bedrockモデルを使用して応答を生成
-        assistant_response = use_bedrock_client(messages)
+        # assistant_response = use_bedrock_client(messages)
         # FastAPIを使用して応答を生成
-        # assistant_response = use_fast_api(message)
+        assistant_response = use_fast_api(message)
         
         # アシスタントの応答を会話履歴に追加
         messages.append({
